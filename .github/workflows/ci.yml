@@ -12,6 +12,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+        
+      - name: Prepare Test Results folder
+        run: mkdir -p TestResults
 
       - name: Build and Test
         uses: sersoft-gmbh/xcodebuild-action@v3.2.0
