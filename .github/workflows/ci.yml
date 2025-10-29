@@ -17,7 +17,7 @@ jobs:
         with:
           project: EPCollaboratif.xcodeproj
           scheme: EPCollaboratif
-          destination: 'platform=iOS Simulator,name=iPhone 14,OS=17.0'
+          destination: "platform=iOS Simulator,name=iPhone 14"
           action: test
           result-bundle-path: TestResults/TestResults.xcresult
 
