@@ -29,7 +29,8 @@ jobs:
         run: ls -la TestResults/
             
       - name: Process Test Results
-        uses: kishikawakatsumi/xcresulttool@v1
+        uses: tbartelmess/analyze-xcoderesults-action@0.1.0
+        if: always()
         with:
-            path: TestResults/TestResults.xcresult
-        if: success() || failure()
+          results: TestResults/TestResults.xcresult
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
