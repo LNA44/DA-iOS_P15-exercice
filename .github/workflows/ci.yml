@@ -31,5 +31,8 @@ jobs:
       - name: Check xcresult folder
         run: ls -la TestResults/
             
-      - name: Inspect Test Results
-        run: xcrun xcresulttool get object --legacy --path TestResults/TestResults.xcresult --format json
+      - name: Process Test Results
+            uses: kishikawakatsumi/xcresulttool@v1
+            with:
+                path: TestResults/TestResults.xcresult
+            if: success() || failure()
