@@ -19,6 +19,9 @@ jobs:
         
       - name: Xcode version
         run: /usr/bin/xcodebuild -version
+        
+      - name: Check xcresult folder
+        run: ls -la TestResults/
     
       - name: Build and Test
         run: |
