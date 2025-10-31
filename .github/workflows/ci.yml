@@ -28,7 +28,7 @@ jobs:
           xcodebuild clean build test \
             -project EPCollaboratif.xcodeproj \
             -scheme EPCollaboratif \
-            -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.6' \
+            -destination 'id=16C7C924-90C5-4EFD-A5F2-9647BB0835AD' \
             CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO \
             -enableThreadSanitizer YES \
             ONLY_ACTIVE_ARCH=YES \
