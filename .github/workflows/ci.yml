@@ -29,6 +29,7 @@ jobs:
             -project EPCollaboratif.xcodeproj \
             -scheme EPCollaboratif \
             -destination 'id=16C7C924-90C5-4EFD-A5F2-9647BB0835AD' \
+            -testPlan "EPCollaboratif" \
             CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO \
             -enableThreadSanitizer YES \
             ONLY_ACTIVE_ARCH=YES \
