@@ -8,43 +8,25 @@ on:
 jobs:
   build-and-test:
     runs-on: macos-latest
-    timeout-minutes: 50
     
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-        
-      - name: Select Xcode
-        run: sudo xcode-select -switch /Applications/Xcode_26.0.1.app
-        
-      - name: Prepare TestResults folder
-        run: mkdir -p TestResults
-        
-      - name: Xcode version
-        run: /usr/bin/xcodebuild -version
-        
+
       - name: Clean previous test results
         run: rm -rf TestResults
     
       - name: Build and Test
-        run: |
-          xcodebuild clean build test \
-            -project EPCollaboratif.xcodeproj \
-            -scheme EPCollaboratif \
-            -destination "platform=iOS Simulator,name=iPhone 16,OS=18.5,arch=arm64" \
-            CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO \
-            -enableThreadSanitizer YES \
-            ONLY_ACTIVE_ARCH=YES \
-            -resultBundlePath TestResults/TestResults.xcresult
+        uses: sersoft-gmbh/xcodebuild-action@v3.2.0
+        with:
+            project: EPCollaboratif.xcodeproj
+            scheme: EPCollaboratif
+            destination: 'platform=iOS Simulator, name=iPhone 14,OS=18.5'
+            action: test
+            result-bundle-path: 'TestResults/TestResults.xcresult'
             
-      - name: Check xcresult folder after build
-        run: ls -la TestResults/
-        
-      - name: List contents of xcresult
-        run: xcrun xcresulttool get object --legacy --path TestResults/TestResults.xcresult --format json
-
       - name: Process Test Results
         uses: kishikawakatsumi/xcresulttool@v1
         with:
-          path: TestResults/TestResults.xcresult
+            path: TestResults/TestResults.xcresult
         if: success() || failure()
