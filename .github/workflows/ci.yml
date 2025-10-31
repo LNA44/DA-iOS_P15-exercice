@@ -25,6 +25,9 @@ jobs:
             action: test
             result-bundle-path: 'TestResults/TestResults.xcresult'
             
+      - name: Check xcresult folder
+        run: ls -la TestResults/
+            
       - name: Process Test Results
         uses: kishikawakatsumi/xcresulttool@v1
         with:
