@@ -22,9 +22,6 @@ jobs:
         
       - name: Xcode version
         run: /usr/bin/xcodebuild -version
-        
-      - name: Check xcresult folder
-        run: ls -la TestResults/
     
       - name: Build and Test
         run: |
@@ -36,6 +33,9 @@ jobs:
             -enableThreadSanitizer YES \
             ONLY_ACTIVE_ARCH=YES \
             -resultBundlePath TestResults/TestResults.xcresult
+            
+      - name: Check xcresult folder after build
+        run: ls -la TestResults/
 
       - name: Process Test Results
         uses: kishikawakatsumi/xcresulttool@v1
