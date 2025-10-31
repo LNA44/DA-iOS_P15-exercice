@@ -32,4 +32,4 @@ jobs:
         run: ls -la TestResults/
             
       - name: Inspect Test Results
-        run: xcrun xcresulttool get object --path TestResults/TestResults.xcresult --format json
+        run: xcrun xcresulttool get object --legacy --path TestResults/TestResults.xcresult --format json
