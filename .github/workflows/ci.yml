@@ -28,7 +28,7 @@ jobs:
           xcodebuild clean build test \
             -project EPCollaboratif.xcodeproj \
             -scheme EPCollaboratif \
-            -destination 'platform=iOS Simulator,name=iPhone 17 Pro,OS=26.0.1' \
+            -destination 'platform=iOS Simulator,name=iPhone 17 Pro,OS=17.0' \
             CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO \
             -enableThreadSanitizer YES \
             ONLY_ACTIVE_ARCH=YES \
