@@ -28,9 +28,5 @@ jobs:
       - name: Check xcresult folder
         run: ls -la TestResults/
             
-      - name: Process Test Results
-        uses: tbartelmess/analyze-xcoderesults-action@0.1.0
-        if: always()
-        with:
-          results: TestResults/TestResults.xcresult
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Inspect Test Results
+        run: xcrun xcresulttool get --path TestResults/TestResults.xcresult --format json
