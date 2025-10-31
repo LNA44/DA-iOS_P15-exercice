@@ -15,6 +15,9 @@ jobs:
 
       - name: Clean previous test results
         run: rm -rf TestResults
+        
+      - name: List available simulators
+        run: xcrun simctl list devices
     
       - name: Build and Test
         uses: sersoft-gmbh/xcodebuild-action@v3.2.0
