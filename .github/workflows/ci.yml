@@ -17,6 +17,9 @@ jobs:
       - name: Select Xcode
         run: sudo xcode-select -switch /Applications/Xcode_26.0.1.app
         
+      - name: Prepare TestResults folder
+        run: mkdir -p TestResults
+        
       - name: Xcode version
         run: /usr/bin/xcodebuild -version
         
