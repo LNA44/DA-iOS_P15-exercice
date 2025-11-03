@@ -39,7 +39,7 @@ jobs:
         run: |
             xcresultparser TestResults/TestResults.xcresult \
                           -o junit \
-                          -f junit.xml
+                          -f=junit.xml
             
             # Vérifier que le fichier existe
             echo "JUnit XML file created:"
