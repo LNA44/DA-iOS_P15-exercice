@@ -37,9 +37,9 @@ jobs:
       - name: Convert xcresult to JUnit
         if: success() || failure()
         run: |
-            xcresultparser -o junit \
-                          -f junit.xml \
-                          TestResults/TestResults.xcresult
+            xcresultparser TestResults/TestResults.xcresult \
+                          -o junit \
+                          -f junit.xml
             
             # Vérifier que le fichier existe
             echo "JUnit XML file created:"
