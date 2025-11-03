@@ -31,7 +31,8 @@ jobs:
       - name: Check xcresult folder
         run: ls -la TestResults/
             
-      - name: Process Test Results (Human Readable)
-        run: |
-            xcrun xcresulttool get --format human-readable --path TestResults/TestResults.xcresult
+      - name: Process Test Results
+        uses: kishikawakatsumi/xcresulttool@v1.7.1
+        with:
+            path: TestResults/TestResults.xcresult
         if: success() || failure()
