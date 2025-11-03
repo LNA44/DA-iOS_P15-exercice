@@ -28,16 +28,32 @@ jobs:
             action: test
             result-bundle-path: 'TestResults/TestResults.xcresult'
             
+      - name: Install xcbeautify
+        if: success() || failure()
+        run: brew install xcbeautify
+
+      - name: Convert xcresult to JUnit
+        if: success() || failure()
+        run: |
+            xcrun xcresulttool get --format json --path TestResults/TestResults.xcresult | \
+            xcbeautify --renderer junit --report junit --report-path .
+            
+            # Vérifier que le fichier existe
+            ls -lh junit.xml
+            cat junit.xml
+
       - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action/macos@v2
         if: success() || failure()
         with:
             check_name: iOS Test Results
-            junit_files: TestResults/TestResults.xcresult
+            files: junit.xml
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         if: success() || failure()
         with:
             name: test-results
-            path: TestResults/TestResults.xcresult
+            path: |
+                TestResults/TestResults.xcresult
+                junit.xml
