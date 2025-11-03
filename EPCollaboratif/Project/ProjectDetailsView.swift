@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ProjectDetailsView: View {
     // MARK: - Public Properties
-
+    
     @ObservedObject var project: Project
 
     // MARK: - Private Properties

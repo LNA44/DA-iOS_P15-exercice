@@ -1,0 +1,61 @@
+name: IOS Build and Test
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Clean previous test results
+        run: rm -rf TestResults
+
+      - name: List available simulators
+        run: xcrun simctl list devices
+
+      - name: Build and Test
+        uses: sersoft-gmbh/xcodebuild-action@v3.2.0
+        with:
+            project: EPCollaboratif.xcodeproj
+            scheme: EPCollaboratif
+            destination: 'platform=iOS Simulator,name=iPhone 16,OS=18.5'
+            action: test
+            result-bundle-path: 'TestResults/TestResults.xcresult'
+
+      - name: Install xcresultparser
+        if: success() || failure()
+        run: |
+            brew tap a7ex/homebrew-formulae
+            brew install xcresultparser
+
+      - name: Convert xcresult to JUnit
+        if: success() || failure()
+        run: |
+            xcresultparser TestResults/TestResults.xcresult -o junit > junit.xml
+            
+            # Vérifier que le fichier existe
+            echo "JUnit XML file created:"
+            ls -lh junit.xml
+            head -20 junit.xml
+
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action/macos@v2
+        if: success() || failure()
+        with:
+            check_name: iOS Test Results
+            files: junit.xml
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        if: success() || failure()
+        with:
+            name: test-results
+            path: |
+                TestResults/TestResults.xcresult
+                junit.xml
