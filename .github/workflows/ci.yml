@@ -8,17 +8,17 @@ on:
 jobs:
   build-and-test:
     runs-on: macos-latest
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Clean previous test results
         run: rm -rf TestResults
-        
+
       - name: List available simulators
         run: xcrun simctl list devices
-    
+
       - name: Build and Test
         uses: sersoft-gmbh/xcodebuild-action@v3.2.0
         with:
@@ -27,8 +27,8 @@ jobs:
             destination: 'platform=iOS Simulator,name=iPhone 16,OS=18.5'
             action: test
             result-bundle-path: 'TestResults/TestResults.xcresult'
-            
-       - name: Install xcresultparser
+
+      - name: Install xcresultparser
         if: success() || failure()
         run: |
             brew tap a7ex/homebrew-formulae
@@ -37,12 +37,14 @@ jobs:
       - name: Convert xcresult to JUnit
         if: success() || failure()
         run: |
-            xcrun xcresulttool get --format json --path TestResults/TestResults.xcresult | \
-            xcbeautify --renderer junit --report junit --report-path .
+            xcresultparser --output-format junit \
+                          --output junit.xml \
+                          TestResults/TestResults.xcresult
             
             # Vérifier que le fichier existe
+            echo "JUnit XML file created:"
             ls -lh junit.xml
-            cat junit.xml
+            head -20 junit.xml
 
       - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action/macos@v2
