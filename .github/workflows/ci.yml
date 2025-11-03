@@ -28,9 +28,11 @@ jobs:
             action: test
             result-bundle-path: 'TestResults/TestResults.xcresult'
             
-      - name: Install xcbeautify
+       - name: Install xcresultparser
         if: success() || failure()
-        run: brew install xcbeautify
+        run: |
+            brew tap a7ex/homebrew-formulae
+            brew install xcresultparser
 
       - name: Convert xcresult to JUnit
         if: success() || failure()
