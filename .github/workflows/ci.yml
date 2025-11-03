@@ -28,16 +28,28 @@ jobs:
             action: test
             result-bundle-path: 'TestResults/TestResults.xcresult'
             
-      - name: Debug xcresult structure
+      - name: Install xcbeautify
+        if: success() || failure()
+        run: brew install xcbeautify
+            
+      - name: Convert to JUnit
         if: success() || failure()
         run: |
-            echo "=== Checking xcresult ==="
-            ls -la TestResults/
-            file TestResults/TestResults.xcresult
-            du -sh TestResults/TestResults.xcresult
-            
-      - name: Process Test Results
-        uses: kishikawakatsumi/xcresulttool@v1.7.1
-        with:
-            path: TestResults/TestResults.xcresult
+            xcrun xcresulttool get --format json --path TestResults/TestResults.xcresult | \
+            xcbeautify --renderer junit > junit.xml || echo "Conversion failed"
+
+      - name: Test Summary
+        uses: test-summary/action@v2
         if: success() || failure()
+        with:
+            paths: junit.xml
+            show: "fail, skip"
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        if: success() || failure()
+        with:
+            name: test-results
+            path: |
+                TestResults/TestResults.xcresult
+                junit.xml
