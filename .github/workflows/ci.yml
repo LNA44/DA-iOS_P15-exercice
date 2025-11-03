@@ -28,8 +28,13 @@ jobs:
             action: test
             result-bundle-path: 'TestResults/TestResults.xcresult'
             
-      - name: Check xcresult folder
-        run: ls -la TestResults/
+      - name: Debug xcresult structure
+        if: success() || failure()
+        run: |
+            echo "=== Checking xcresult ==="
+            ls -la TestResults/
+            file TestResults/TestResults.xcresult
+            du -sh TestResults/TestResults.xcresult
             
       - name: Process Test Results
         uses: kishikawakatsumi/xcresulttool@v1.7.1
